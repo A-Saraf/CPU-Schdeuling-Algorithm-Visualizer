@@ -1,0 +1,72 @@
+/* ---------- GLOBAL THEME ---------- */
+:root {
+    --bg-dark: #0d1117;
+    --panel-dark: #151b23;
+    --text-light: #e6edf3;
+    --accent: #58a6ff;
+    --border: #30363d;
+
+    --color1: #ff6b6b;
+    --color2: #6bc5ff;
+    --color3: #ffd93d;
+    --color4: #6bff95;
+    --color5: #d66bff;
+    --color6: #ff9f40;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-light);
+}
+
+.container {
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+header h1 {
+    text-align: center;
+}
+
+/* ---------- PANELS ---------- */
+.input-panel, .output-panel {
+    padding: 20px;
+    background: var(--panel-dark);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.input-panel { width: 30%; }
+.output-panel { width: 70%; }
+
+/* ---------- TABLE ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid var(--border);
+    padding: 8px;
+    text-align: center;
+}
+
+th { background: #1f2937; }
+
+/* ---------- GANTT CHART ---------- */
+#gantt-chart {
+    display: flex;
+    gap: 4px;
+    margin: 20px 0;
+}
+
+.gantt-block {
+    padding: 10px;
+    border-radius: 6px;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}

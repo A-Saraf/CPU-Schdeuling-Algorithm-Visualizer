@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CPU Scheduling Visualizer</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CPU Scheduling Algorithm Visualizer</h1>
+        </header>
+
+        <section class="input-panel">
+            <h2>Process Input</h2>
+            <form id="process-form">
+                <input type="text" id="pid" placeholder="PID" required />
+                <input type="number" id="arrival" placeholder="Arrival Time" required />
+                <input type="number" id="burst" placeholder="Burst Time" required />
+                <input type="number" id="priority" placeholder="Priority (Optional)" />
+                <button type="submit">Add Process</button>
+            </form>
+
+            <div class="algorithm-select">
+                <label>Select Algorithm:</label>
+                <select id="algorithm">
+                    <option value="fcfs">FCFS</option>
+                    <option value="sjf-non">SJF (Non-preemptive)</option>
+                    <option value="sjf-pre">SJF (Preemptive)</option>
+                    <option value="priority-non">Priority (Non-preemptive)</option>
+                    <option value="priority-pre">Priority (Preemptive)</option>
+                    <option value="rr">Round Robin</option>
+                </select>
+                <input type="number" id="quantum" placeholder="Time Quantum" />
+            </div>
+
+            <button id="run-btn">Run Simulation</button>
+        </section>
+
+        <section class="output-panel">
+            <h2>Gantt Chart</h2>
+            <div id="gantt-chart"></div>
+
+            <h2>Process Statistics</h2>
+            <table id="stats-table">
+                <thead>
+                    <tr>
+                        <th>PID</th><th>AT</th><th>BT</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
