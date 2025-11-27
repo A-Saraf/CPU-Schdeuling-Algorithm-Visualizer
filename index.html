@@ -1,59 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CPU Scheduling Visualizer</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CPU Scheduling Visualizer</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <h1>CPU Scheduling Algorithm Visualizer</h1>
-        </header>
+  <div class="container">
 
-        <section class="input-panel">
-            <h2>Process Input</h2>
-            <form id="process-form">
-                <input type="text" id="pid" placeholder="PID" required />
-                <input type="number" id="arrival" placeholder="Arrival Time" required />
-                <input type="number" id="burst" placeholder="Burst Time" required />
-                <input type="number" id="priority" placeholder="Priority (Optional)" />
-                <button type="submit">Add Process</button>
-            </form>
+    <!-- HEADER -->
+    <header class="header">
+      <h1>CPU Scheduler Visualizer</h1>
+      <p>Understand CPU Scheduling Algorithms Through Intuitive Visualization</p>
+    </header>
 
-            <div class="algorithm-select">
-                <label>Select Algorithm:</label>
-                <select id="algorithm">
-                    <option value="fcfs">FCFS</option>
-                    <option value="sjf-non">SJF (Non-preemptive)</option>
-                    <option value="sjf-pre">SJF (Preemptive)</option>
-                    <option value="priority-non">Priority (Non-preemptive)</option>
-                    <option value="priority-pre">Priority (Preemptive)</option>
-                    <option value="rr">Round Robin</option>
-                </select>
-                <input type="number" id="quantum" placeholder="Time Quantum" />
+    <div class="main-content">
+
+      <!-- ------------------------------------------- -->
+      <!-- LEFT PANEL (Medium Padding - Option B) -->
+      <!-- ------------------------------------------- -->
+      <aside class="left-panel">
+
+        <!-- Algorithm Selection -->
+        <section class="card">
+          <h2>Algorithm</h2>
+          <select id="algorithmSelect" class="form-select">
+            <option value="FCFS">FCFS - First Come First Served</option>
+            <option value="SJF">SJF - Shortest Job First (Non-Preemptive)</option>
+            <option value="SRTF">SRTF - Shortest Remaining Time First</option>
+            <option value="Priority">Priority Scheduling</option>
+            <option value="RoundRobin">Round Robin</option>
+          </select>
+
+          <div id="timeQuantumCard" class="mt" style="display:none;">
+            <label class="form-label">Time Quantum (TQ)</label>
+            <input id="timeQuantum" type="number" class="form-input" value="2" min="1" />
+          </div>
+        </section>
+
+        <!-- Quick Start -->
+        <!-- <section class="card">
+          <h2>Quick Start</h2>
+          <button id="sampleBtn" class="btn btn-success">📋 Load Sample Input</button>
+          <p class="hint">Try sample processes instantly.</p>
+        </section> -->
+
+        <!-- Add Process -->
+        <section class="card">
+          <h2>Add Process</h2>
+
+          <label class="form-label">Process ID</label>
+          <input id="processId" class="form-input" placeholder="e.g., P1" />
+
+          <div class="two-cols mt">
+            <div>
+              <label class="form-label">Arrival Time</label>
+              <input id="arrivalTime" class="form-input" type="number" value="0" />
+            </div>
+            <div>
+              <label class="form-label">Burst Time</label>
+              <input id="burstTime" class="form-input" type="number" value="1" min="1" />
+            </div>
+          </div>
+
+          <label id="priorityLabel" class="form-label mt" style="display:none;">Priority (lower = higher)</label>
+          <input id="priority" class="form-input" type="number" value="1" min="1" style="display:none;" />
+
+          <button id="addBtn" class="btn btn-success mt">+ Add Process</button>
+        </section>
+
+        <!-- Processes List -->
+        <section class="card processes-card">
+          <h2>Processes List</h2>
+          <div id="processList" class="process-list"></div>
+          <button id="clearAllBtn" class="btn btn-danger mt" style="display:none;">🗑 Clear All</button>
+        </section>
+
+        <!-- CONTROLS -->
+        <section class="card">
+          <h2>Controls</h2>
+          <div class="button-group">
+            <button id="runBtn" class="btn btn-primary">▶ Run</button>
+            <button id="resetBtn" class="btn btn-secondary">↻ Reset</button>
+          </div>
+        </section>
+
+      </aside>
+
+      <!-- ------------------------------------------- -->
+      <!-- RIGHT PANEL -->
+      <!-- ------------------------------------------- -->
+      <main class="right-panel">
+
+        <!-- Gantt Chart -->
+        <section class="card gantt-card">
+          <h2>Gantt Chart</h2>
+          <div id="ganttContainer" class="gantt-container">
+            <!-- Placeholder Table -->
+            <div id="ganttPlaceholder" class="gantt-placeholder">
+              <table class="empty-grid">
+                <tbody>
+                  <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                  <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                  <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                </tbody>
+              </table>
+              <p class="placeholder-note">Run the scheduler to generate the Gantt chart.</p>
+            </div>
+          </div>
+        </section>
+
+          <!-- EXECUTION DETAILS -->
+        <section class="card full-width">
+          <h2>Process Execution Details</h2>
+          <div id="executionDetails" class="execution-table-container">
+            <p class="placeholder-text">Execute scheduler to see process execution details</p>
+          </div>
+        </section>
+
+        <!-- METRICS -->
+        <section class="card metrics-panel">
+          <h2>Metrics</h2>
+
+          <div class="metrics-grid">
+
+            <!-- CPU Utilization (Circular Chart) -->
+            <div class="metric cardio">
+              <div class="metric-title">CPU Utilization</div>
+              <div class="cpu-ring-wrap">
+                <svg id="cpuRing" class="cpu-ring" width="110" height="110" viewBox="0 0 110 110">
+                  <circle class="ring-bg" cx="55" cy="55" r="45" stroke-width="10" fill="none"/>
+                  <circle id="cpuProgress" class="ring-progress"
+                          cx="55" cy="55" r="45" stroke-width="10"
+                          stroke-linecap="round" fill="none"
+                          transform="rotate(-90 55 55)" />
+                </svg>
+                <div class="cpu-label"><span id="cpuPercent">0%</span></div>
+              </div>
             </div>
 
-            <button id="run-btn">Run Simulation</button>
+            <!-- Glass Cards -->
+            <div class="metric glass">
+              <div class="metric-title">Avg Waiting Time</div>
+              <div class="glass-body">
+                <div class="glass-progress-bar">
+                  <div id="avgWaitBar" class="glass-progress-fill"></div>
+                </div>
+                <div class="glass-number"><span id="avgWait">0.00</span> units</div>
+              </div>
+            </div>
+
+            <div class="metric glass">
+              <div class="metric-title">Avg Turnaround Time</div>
+              <div class="glass-body">
+                <div class="glass-progress-bar">
+                  <div id="avgTurnBar" class="glass-progress-fill"></div>
+                </div>
+                <div class="glass-number"><span id="avgTurnaround">0.00</span> units</div>
+              </div>
+            </div>
+
+            <!-- Simple Cards -->
+            <div class="metric simple-card">
+              <div class="metric-title">Total Time</div>
+              <div class="big-number" id="totalTime">0</div>
+            </div>
+
+            <div class="metric simple-card">
+              <div class="metric-title">Sum Turnaround</div>
+              <div class="big-number" id="totalTAT">0</div>
+            </div>
+
+          </div>
         </section>
 
-        <section class="output-panel">
-            <h2>Gantt Chart</h2>
-            <div id="gantt-chart"></div>
 
-            <h2>Process Statistics</h2>
-            <table id="stats-table">
-                <thead>
-                    <tr>
-                        <th>PID</th><th>AT</th><th>BT</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </section>
+      </main>
     </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="scheduler.js"></script>
 </body>
 </html>

@@ -1,72 +1,434 @@
-/* ---------- GLOBAL THEME ---------- */
-:root {
-    --bg-dark: #0d1117;
-    --panel-dark: #151b23;
-    --text-light: #e6edf3;
-    --accent: #58a6ff;
-    --border: #30363d;
-
-    --color1: #ff6b6b;
-    --color2: #6bc5ff;
-    --color3: #ffd93d;
-    --color4: #6bff95;
-    --color5: #d66bff;
-    --color6: #ff9f40;
+/* -----------------------------------------
+   Global & Theme
+------------------------------------------ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: var(--bg-dark);
-    color: var(--text-light);
+:root{
+  --bg-1: #071428;
+  --bg-2: #1b0f3a;
+  --muted: #98a3b9;
+
+  --accent1: #5b9cff;
+  --accent2: #8b5cf6;
+  --accent3: #4fd1c5;
+  --danger: #ef4444;
+
+  --card-bg: rgba(255,255,255,0.04);
+  --border-light: rgba(255,255,255,0.06);
+
+  --glass-bg: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+  --glass-blur: 10px;
+
+  --font: "Inter", "Segoe UI", system-ui, sans-serif;
 }
 
+html, body {
+  height: 100%;
+}
+
+body{
+  font-family: var(--font);
+  color: #e9f1ff;
+  background: linear-gradient(135deg, var(--bg-1) 0%, #101b36 45%, var(--bg-2) 100%);
+  padding: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* -----------------------------------------
+   Layout Container
+------------------------------------------ */
 .container {
-    padding: 20px;
+  max-width: 1400px;
+  margin: auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header p {
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* Main Grid */
+.main-content {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 20px;
+  align-items: start;
+  min-height: calc(100vh - 150px);
+}
+
+/* -----------------------------------------
+   Left Panel
+------------------------------------------ */
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Card */
+.card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 5px 16px rgba(0,0,0,0.4);
+}
+
+.card h2 {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+/* Form controls */
+.form-label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.04);
+  color: #e9f1ff;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Buttons */
+.btn {
+  border: none;
+  outline: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.15s ease;
+  font-size: 14px;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: #071428;
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.05);
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.btn-success {
+  background: linear-gradient(90deg, #34d399, #06b6d4);
+  color: #071b20;
+}
+
+.btn-danger {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* -----------------------------------------
+   Process List
+------------------------------------------ */
+.process-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 210px;
+  overflow-y: auto;
+}
+
+.process-item {
+  background: rgba(255,255,255,0.03);
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.process-id {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.process-details {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* -----------------------------------------
+   Right Panel
+------------------------------------------ */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* -----------------------------------------
+   Gantt Chart
+------------------------------------------ */
+.gantt-container {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gantt-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.empty-grid {
+  width: 90%;
+  border-collapse: collapse;
+  opacity: 0.12;
+}
+
+.empty-grid td {
+  border: 1px dashed rgba(255,255,255,0.05);
+  height: 28px;
+}
+
+.placeholder-note {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Bar animation */
+.gantt-chart {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+}
+
+.gantt-bar {
+  padding: 8px 6px;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  transform-origin: left center;
+  animation: growbar 0.6s ease forwards;
+  opacity: 0;
+}
+
+@keyframes growbar {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+.time-axis {
+  position: relative;
+  height: 25px;
+  margin-top: 8px;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.time-marker {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+
+/* Gantt Colors */
+.c0 { background: linear-gradient(90deg,#60a5fa,#1e3a8a); color: white; }
+.c1 { background: linear-gradient(90deg,#a78bfa,#6d28d9); color: white; }
+.c2 { background: linear-gradient(90deg,#fb7185,#be185d); color: white; }
+.c3 { background: linear-gradient(90deg,#fbbf24,#d97706); color: #071428; }
+.c4 { background: linear-gradient(90deg,#34d399,#059669); color: #071b10; }
+.c5 { background: linear-gradient(90deg,#06b6d4,#0369a1); color: #07172a; }
+
+/* -----------------------------------------
+   Metrics
+------------------------------------------ */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 15px;
+}
+
+/* CPU Circle */
+.metric.cardio {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cpu-ring-wrap {
+  width: 110px;
+  height: 110px;
+  position: relative;
+}
+
+.ring-bg {
+  stroke: rgba(255,255,255,0.1);
+}
+
+.ring-progress {
+  stroke: url(#cpuGrad);
+  transition: stroke-dashoffset 0.8s ease;
+}
+
+.cpu-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cpu-label span {
+  font-weight: 800;
+  font-size: 20px;
+}
+
+/* Glass Metrics */
+.metric.glass {
+  padding: 14px;
+  border-radius: 14px;
+  backdrop-filter: blur(var(--glass-blur));
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.metric-title {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.glass-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.glass-progress-bar {
+  height: 12px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.glass-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  transition: width 0.7s ease;
+}
+
+.glass-number {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Simple Metric Card */
+.simple-card {
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.big-number {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* -----------------------------------------
+   Execution Details
+------------------------------------------ */
+.execution-table-container {
+  overflow-x: auto;
+}
+
+.execution-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.execution-table th,
+.execution-table td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 13px;
+  text-align: center;
+}
+
+.placeholder-text {
+  color: var(--muted);
+  padding: 16px;
+}
+
+/* -----------------------------------------
+   Responsive
+------------------------------------------ */
+@media (max-width: 1100px) {
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+  .metrics-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+.button-group {
     display: flex;
-    gap: 20px;
+    justify-content: center !important;
+    gap: 12px;
 }
-
-header h1 {
-    text-align: center;
-}
-
-/* ---------- PANELS ---------- */
-.input-panel, .output-panel {
-    padding: 20px;
-    background: var(--panel-dark);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-}
-
-.input-panel { width: 30%; }
-.output-panel { width: 70%; }
-
-/* ---------- TABLE ---------- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid var(--border);
-    padding: 8px;
-    text-align: center;
-}
-
-th { background: #1f2937; }
-
-/* ---------- GANTT CHART ---------- */
-#gantt-chart {
-    display: flex;
-    gap: 4px;
-    margin: 20px 0;
-}
-
-.gantt-block {
-    padding: 10px;
-    border-radius: 6px;
-    color: black;
-    font-weight: bold;
-    text-align: center;
+.card button {
+    margin: auto;
+    display: block;
 }
