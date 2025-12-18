@@ -10,7 +10,7 @@
 <body>
   <div class="container">
 
-    <!-- HEADER -->
+    <!-- ==================== HEADER ==================== -->
     <header class="header">
       <h1>CPU Scheduler Visualizer</h1>
       <p>Understand CPU Scheduling Algorithms Through Intuitive Visualization</p>
@@ -18,14 +18,13 @@
 
     <div class="main-content">
 
-      <!-- ------------------------------------------- -->
-      <!-- LEFT PANEL -->
-      <!-- ------------------------------------------- -->
+      <!-- ==================== LEFT PANEL ==================== -->
       <aside class="left-panel">
 
         <!-- Algorithm Selection -->
         <section class="card">
           <h2>Algorithm</h2>
+          <!-- Algorithm dropdown with info button -->
           <div style="display: flex; align-items: center; gap: 8px;">
             <select id="algorithmSelect" class="form-select" style="flex: 1; margin-bottom: 0;">
               <option value="FCFS">FCFS - First Come First Served</option>
@@ -34,37 +33,78 @@
               <option value="Priority">Priority Scheduling</option>
               <option value="RoundRobin">Round Robin</option>
             </select>
+            <!-- Info button to show algorithm description -->
             <button id="algoInfoBtn" class="info-btn" title="Algorithm Information">i</button>
           </div>
 
+          <!-- Time Quantum input (shown only for Round Robin) -->
           <div id="timeQuantumCard" class="mt" style="display:none;">
             <label class="form-label">Time Quantum (TQ)</label>
             <input id="timeQuantum" type="number" class="form-input" value="2" min="1" />
           </div>
         </section>
 
-        <!-- Add Process -->
+        <!-- Tab Selection: Manual Entry vs Upload Table -->
         <section class="card">
-          <h2>Add Process</h2>
-
-          <label class="form-label">Process ID</label>
-          <input id="processId" class="form-input" placeholder="e.g., P1" />
-
-          <div class="two-cols mt">
-            <div>
-              <label class="form-label">Arrival Time</label>
-              <input id="arrivalTime" class="form-input" type="number" value="0" />
-            </div>
-            <div>
-              <label class="form-label">Burst Time</label>
-              <input id="burstTime" class="form-input" type="number" value="1" min="1" />
-            </div>
+          <div class="tab-container">
+            <button class="tab-btn active" data-tab="manual">Manual Entry</button>
+            <button class="tab-btn" data-tab="upload">Upload Table</button>
           </div>
 
-          <label id="priorityLabel" class="form-label mt" style="display:none;">Priority (lower = higher)</label>
-          <input id="priority" class="form-input" type="number" value="1" min="1" style="display:none;" />
+          <!-- ========== MANUAL ENTRY TAB ========== -->
+          <div id="manualTab" class="tab-content active">
+            <h2 style="margin-top: 15px;">Add Process</h2>
 
-          <button id="addBtn" class="btn btn-success mt">+ Add Process</button>
+            <label class="form-label">Process ID</label>
+            <input id="processId" class="form-input" placeholder="e.g., P1" />
+
+            <!-- Arrival and Burst Time in two columns -->
+            <div class="two-cols mt">
+              <div>
+                <label class="form-label">Arrival Time</label>
+                <input id="arrivalTime" class="form-input" type="number" value="0" />
+              </div>
+              <div>
+                <label class="form-label">Burst Time</label>
+                <input id="burstTime" class="form-input" type="number" value="1" min="1" />
+              </div>
+            </div>
+
+            <!-- Priority input (shown only for Priority Scheduling) -->
+            <label id="priorityLabel" class="form-label mt" style="display:none;">Priority (lower = higher)</label>
+            <input id="priority" class="form-input" type="number" value="1" min="1" style="display:none;" />
+
+            <button id="addBtn" class="btn btn-success mt">+ Add Process</button>
+          </div>
+
+          <!-- ========== UPLOAD TABLE TAB ========== -->
+          <div id="uploadTab" class="tab-content">
+            <h2 style="margin-top: 15px;">Upload Table</h2>
+            
+            <!-- Drag & drop upload area -->
+            <div class="upload-area" id="uploadArea">
+              <div class="upload-icon">📁</div>
+              <p class="upload-text">Click to upload or drag & drop</p>
+              <p class="upload-subtext">Supports CSV and Excel files (.csv, .xlsx, .xls)</p>
+              <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" style="display: none;" />
+            </div>
+
+            <!-- Download sample template button -->
+            <button id="downloadTemplate" class="btn btn-secondary mt">
+              📥 Download Sample Template
+            </button>
+
+            <!-- Format information -->
+            <div class="upload-info mt">
+              <p class="info-title">Expected Format:</p>
+              <div class="info-box">
+                <code>Process, ArrivalTime, BurstTime, Priority</code>
+                <code>P1, 0, 5, 2</code>
+                <code>P2, 1, 3, 1</code>
+              </div>
+              <p class="info-note">* Priority column is optional (only for Priority Scheduling)</p>
+            </div>
+          </div>
         </section>
 
         <!-- Processes List -->
@@ -74,7 +114,7 @@
           <button id="clearAllBtn" class="btn btn-danger mt" style="display:none;">🗑 Clear All</button>
         </section>
 
-        <!-- CONTROLS -->
+        <!-- Control Buttons -->
         <section class="card">
           <h2>Controls</h2>
           <div class="button-group">
@@ -85,16 +125,14 @@
 
       </aside>
 
-      <!-- ------------------------------------------- -->
-      <!-- RIGHT PANEL -->
-      <!-- ------------------------------------------- -->
+      <!-- ==================== RIGHT PANEL ==================== -->
       <main class="right-panel">
 
-        <!-- Gantt Chart -->
+        <!-- Gantt Chart Visualization -->
         <section class="card gantt-card">
           <h2>Gantt Chart</h2>
           <div id="ganttContainer" class="gantt-container">
-            <!-- Placeholder Table -->
+            <!-- Placeholder shown before running scheduler -->
             <div id="ganttPlaceholder" class="gantt-placeholder">
               <table class="empty-grid">
                 <tbody>
@@ -108,7 +146,7 @@
           </div>
         </section>
 
-        <!-- EXECUTION DETAILS -->
+        <!-- Process Execution Details Table -->
         <section class="card full-width">
           <h2>Process Execution Details</h2>
           <div id="executionDetails" class="execution-table-container">
@@ -116,13 +154,13 @@
           </div>
         </section>
 
-        <!-- METRICS -->
+        <!-- Performance Metrics -->
         <section class="card metrics-panel">
           <h2>Metrics</h2>
 
           <div class="metrics-grid">
 
-            <!-- CPU Utilization (Circular Chart) -->
+            <!-- CPU Utilization (Circular Progress) -->
             <div class="metric cardio">
               <div class="metric-title">CPU Utilization</div>
               <div class="cpu-ring-wrap">
@@ -137,7 +175,7 @@
               </div>
             </div>
 
-            <!-- Glass Cards -->
+            <!-- Average Waiting Time -->
             <div class="metric glass">
               <div class="metric-title">Avg Waiting Time</div>
               <div class="glass-body">
@@ -148,6 +186,7 @@
               </div>
             </div>
 
+            <!-- Average Turnaround Time -->
             <div class="metric glass">
               <div class="metric-title">Avg Turnaround Time</div>
               <div class="glass-body">
@@ -158,6 +197,7 @@
               </div>
             </div>
 
+            <!-- Average Response Time -->
             <div class="metric glass">
               <div class="metric-title">Avg Response Time</div>
               <div class="glass-body">
@@ -168,7 +208,7 @@
               </div>
             </div>
 
-            <!-- Simple Cards with Progress Bars -->
+            <!-- Total Execution Time -->
             <div class="metric glass">
               <div class="metric-title">Total Time</div>
               <div class="glass-body">
@@ -179,6 +219,7 @@
               </div>
             </div>
 
+            <!-- Sum of all Turnaround Times -->
             <div class="metric glass">
               <div class="metric-title">Sum Turnaround</div>
               <div class="glass-body">
@@ -196,7 +237,7 @@
     </div>
   </div>
 
-  <!-- Algorithm Info Modal -->
+  <!-- ==================== ALGORITHM INFO MODAL ==================== -->
   <div id="algoModal" class="modal">
     <div class="modal-overlay" id="modalOverlay"></div>
     <div class="modal-content">
@@ -209,531 +250,14 @@
     </div>
   </div>
 
-  <script>
-class Scheduler {
-    constructor() {
-        this.processes = [];
-        this.timeline = [];
-        this.metrics = null;
-
-        this.algorithmDescriptions = {
-            FCFS: "First Come First Served (FCFS) is the simplest CPU scheduling algorithm that executes processes in the exact order they arrive in the ready queue. It uses a FIFO (First In, First Out) approach where the first process to arrive gets CPU access first. While it's easy to understand and implement with no starvation, FCFS suffers from the convoy effect where short processes must wait for long processes to complete, leading to poor average waiting times. It's non-preemptive, meaning once a process starts execution, it runs to completion.",
-            SJF: "Shortest Job First (SJF) selects the process with the smallest burst time from the ready queue. This non-preemptive algorithm is provably optimal for minimizing average waiting time when all processes are available simultaneously. However, it requires prior knowledge of burst times, which is often unavailable in practice. SJF can cause starvation for longer processes if shorter ones keep arriving. It's best suited for batch systems where execution times can be estimated accurately.",
-            SRTF: "Shortest Remaining Time First (SRTF) is the preemptive version of SJF that can interrupt a running process if a new process arrives with a shorter remaining time. This allows for better average turnaround times and response times compared to non-preemptive SJF. However, the frequent context switching can add overhead, and longer processes may face significant starvation. SRTF is ideal for time-sharing systems where responsiveness is critical, but it requires accurate burst time prediction.",
-            Priority: "Priority Scheduling assigns a priority value to each process and executes them in order of priority, with lower numbers typically indicating higher priority. Processes with equal priority can be scheduled using FCFS. This flexible algorithm allows the system to favor important tasks, but it can lead to indefinite blocking or starvation of low-priority processes. This can be mitigated using aging, where priority increases as processes wait longer. Priority scheduling works well in systems with clear process importance hierarchies.",
-            RoundRobin: "Round Robin (RR) is a preemptive algorithm designed for time-sharing systems that allocates a fixed time quantum to each process in circular order. When a process's time slice expires, it's moved to the back of the ready queue, ensuring fair CPU distribution and good response times. The performance heavily depends on the time quantum size: too small causes excessive context switching overhead, while too large degenerates into FCFS. RR prevents starvation and works excellently for interactive systems where all processes should get regular CPU access."
-        };
-
-        this.initElements();
-        this.attachEvents();
-        this.injectCPUSVGGradient();
-        this.setupCPUInitial();
-    }
-
-    initElements() {
-        this.algorithmSelect = document.getElementById("algorithmSelect");
-        this.timeQuantumInput = document.getElementById("timeQuantum");
-        this.timeQuantumCard = document.getElementById("timeQuantumCard");
-
-        this.addBtn = document.getElementById("addBtn");
-        this.runBtn = document.getElementById("runBtn");
-        this.resetBtn = document.getElementById("resetBtn");
-        this.clearAllBtn = document.getElementById("clearAllBtn");
-
-        this.processIdInput = document.getElementById("processId");
-        this.arrivalTimeInput = document.getElementById("arrivalTime");
-        this.burstTimeInput = document.getElementById("burstTime");
-        this.priorityInput = document.getElementById("priority");
-        this.priorityLabel = document.getElementById("priorityLabel");
-
-        this.processList = document.getElementById("processList");
-
-        this.ganttContainer = document.getElementById("ganttContainer");
-        this.ganttPlaceholder = document.getElementById("ganttPlaceholder");
-
-        this.avgWaitEl = document.getElementById("avgWait");
-        this.avgTurnEl = document.getElementById("avgTurnaround");
-        this.avgRespEl = document.getElementById("avgResponse");
-        this.totalTimeEl = document.getElementById("totalTime");
-        this.totalTATEl = document.getElementById("totalTAT");
-
-        this.avgWaitBar = document.getElementById("avgWaitBar");
-        this.avgTurnBar = document.getElementById("avgTurnBar");
-        this.avgRespBar = document.getElementById("avgRespBar");
-        this.totalTimeBar = document.getElementById("totalTimeBar");
-        this.totalTATBar = document.getElementById("totalTATBar");
-
-        this.cpuProgress = document.getElementById("cpuProgress");
-        this.cpuPercent = document.getElementById("cpuPercent");
-
-        this.executionDetails = document.getElementById("executionDetails");
-
-        this.algoInfoBtn = document.getElementById("algoInfoBtn");
-        this.algoModal = document.getElementById("algoModal");
-        this.modalOverlay = document.getElementById("modalOverlay");
-        this.modalClose = document.getElementById("modalClose");
-        this.modalTitle = document.getElementById("modalTitle");
-        this.modalDescription = document.getElementById("modalDescription");
-    }
-
-    attachEvents() {
-        this.algorithmSelect.addEventListener("change", () => this.handleAlgorithmChange());
-        this.addBtn.addEventListener("click", () => this.addProcess());
-        this.runBtn.addEventListener("click", () => this.run());
-        this.resetBtn.addEventListener("click", () => this.reset());
-        this.clearAllBtn.addEventListener("click", () => this.clearAll());
-
-        this.processIdInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") this.addProcess();
-        });
-
-        this.algoInfoBtn.addEventListener("click", () => this.showAlgorithmInfo());
-        this.modalClose.addEventListener("click", () => this.hideAlgorithmInfo());
-        this.modalOverlay.addEventListener("click", () => this.hideAlgorithmInfo());
-    }
-
-    showAlgorithmInfo() {
-        const algo = this.algorithmSelect.value;
-        const algoNames = {
-            FCFS: "First Come First Served (FCFS)",
-            SJF: "Shortest Job First (SJF)",
-            SRTF: "Shortest Remaining Time First (SRTF)",
-            Priority: "Priority Scheduling",
-            RoundRobin: "Round Robin"
-        };
-        
-        this.modalTitle.textContent = algoNames[algo];
-        this.modalDescription.textContent = this.algorithmDescriptions[algo];
-        this.algoModal.classList.add("active");
-    }
-
-    hideAlgorithmInfo() {
-        this.algoModal.classList.remove("active");
-    }
-
-    handleAlgorithmChange() {
-        const algo = this.algorithmSelect.value;
-        this.timeQuantumCard.style.display = (algo === "RoundRobin") ? "block" : "none";
-        const showPriority = (algo === "Priority");
-        this.priorityInput.style.display = showPriority ? "block" : "none";
-        this.priorityLabel.style.display = showPriority ? "block" : "none";
-        this.renderProcesses();
-    }
-
-    clearAll() {
-        this.processes = [];
-        this.renderProcesses();
-        this.reset();
-    }
-
-    addProcess() {
-        const id = this.processIdInput.value.trim();
-        const arrival = parseInt(this.arrivalTimeInput.value) || 0;
-        const burst = parseInt(this.burstTimeInput.value) || 1;
-        const priority = parseInt(this.priorityInput.value) || 1;
-
-        if (!id) return alert("Please provide a Process ID.");
-        if (this.processes.some(p => p.id === id)) return alert("Process ID already exists.");
-        if (burst <= 0) return alert("Burst Time must be at least 1.");
-
-        this.processes.push({ id, arrival, burst, priority });
-
-        this.processIdInput.value = "";
-        this.arrivalTimeInput.value = "0";
-        this.burstTimeInput.value = "1";
-        this.priorityInput.value = "1";
-
-        this.renderProcesses();
-    }
-
-    deleteProcess(id) {
-        this.processes = this.processes.filter(p => p.id !== id);
-        this.renderProcesses();
-    }
-
-    renderProcesses() {
-        this.processList.innerHTML = "";
-
-        if (this.processes.length === 0) {
-            this.processList.innerHTML = `<p class="placeholder-text">No processes added</p>`;
-            this.clearAllBtn.style.display = "none";
-            return;
-        }
-
-        this.clearAllBtn.style.display = "block";
-        const isPriority = this.algorithmSelect.value === "Priority";
-
-        this.processes.forEach(p => {
-            const div = document.createElement("div");
-            div.className = "process-item";
-
-            const detail =
-                `AT:${p.arrival} • BT:${p.burst}` +
-                (isPriority ? ` • P:${p.priority}` : "");
-
-            div.innerHTML = `
-              <div>
-                <div class="process-id">${p.id}</div>
-                <div class="process-details">${detail}</div>
-              </div>
-              <button class="btn btn-danger" onclick="scheduler.deleteProcess('${p.id}')">✕</button>
-            `;
-
-            this.processList.appendChild(div);
-        });
-    }
-
-    fcfs() {
-        const result = [];
-        const sorted = [...this.processes].sort((a, b) => a.arrival - b.arrival);
-        let time = 0;
-
-        for (const p of sorted) {
-            if (time < p.arrival) {
-                result.push({ process: "IDLE", start: time, end: p.arrival });
-                time = p.arrival;
-            }
-
-            result.push({ process: p.id, start: time, end: time + p.burst, arrival: p.arrival });
-            time += p.burst;
-        }
-
-        return result;
-    }
-
-    sjf() {
-        const result = [];
-        const remaining = [...this.processes];
-        let time = 0;
-
-        while (remaining.length > 0) {
-            const available = remaining.filter(p => p.arrival <= time);
-
-            if (available.length === 0) {
-                const nextArrival = Math.min(...remaining.map(p => p.arrival));
-                result.push({ process: "IDLE", start: time, end: nextArrival });
-                time = nextArrival;
-                continue;
-            }
-
-            const p = available.reduce((a, b) => a.burst < b.burst ? a : b);
-            result.push({ process: p.id, start: time, end: time + p.burst, arrival: p.arrival });
-            time += p.burst;
-            remaining.splice(remaining.indexOf(p), 1);
-        }
-
-        return result;
-    }
-
-    priority() {
-        const result = [];
-        const remaining = [...this.processes];
-        let time = 0;
-
-        while (remaining.length > 0) {
-            const available = remaining.filter(p => p.arrival <= time);
-
-            if (available.length === 0) {
-                const nextArrival = Math.min(...remaining.map(p => p.arrival));
-                result.push({ process: "IDLE", start: time, end: nextArrival });
-                time = nextArrival;
-                continue;
-            }
-
-            const p = available.reduce((a, b) => a.priority < b.priority ? a : b);
-            result.push({ process: p.id, start: time, end: time + p.burst, arrival: p.arrival });
-            time += p.burst;
-            remaining.splice(remaining.indexOf(p), 1);
-        }
-
-        return result;
-    }
-
-    srtf() {
-        const procs = this.processes.map(p => ({ ...p, remaining: p.burst }));
-        const result = [];
-        let time = 0;
-        let active = null;
-        let startTime = 0;
-
-        while (procs.some(p => p.remaining > 0)) {
-            const available = procs.filter(p => p.arrival <= time && p.remaining > 0);
-
-            if (available.length === 0) {
-                const nextArrival = Math.min(...procs.filter(p => p.remaining > 0).map(p => p.arrival));
-                result.push({ process: "IDLE", start: time, end: nextArrival });
-                time = nextArrival;
-                continue;
-            }
-
-            const shortest = available.reduce((a, b) => a.remaining < b.remaining ? a : b);
-
-            if (active !== shortest) {
-                if (active !== null) {
-                    result.push({ process: active.id, start: startTime, end: time });
-                }
-                active = shortest;
-                startTime = time;
-            }
-
-            active.remaining--;
-            time++;
-
-            if (active.remaining === 0) {
-                result.push({ process: active.id, start: startTime, end: time, arrival: active.arrival });
-                active = null;
-            }
-        }
-
-        return result;
-    }
-
-    roundRobin(tq) {
-        const result = [];
-        const queue = [];
-        const procs = this.processes.map(p => ({ ...p, remaining: p.burst }));
-        let time = 0;
-
-        while (queue.length > 0 || procs.some(p => p.remaining > 0)) {
-            procs.filter(p => p.arrival === time).forEach(p => queue.push(p));
-
-            if (queue.length === 0) {
-                time++;
-                continue;
-            }
-
-            const p = queue.shift();
-            const exec = Math.min(tq, p.remaining);
-
-            result.push({ process: p.id, start: time, end: time + exec, arrival: p.arrival });
-            time += exec;
-            p.remaining -= exec;
-
-            procs.filter(px => px.arrival <= time && px.remaining > 0 && !queue.includes(px))
-                 .forEach(px => queue.push(px));
-
-            if (p.remaining > 0) queue.push(p);
-        }
-
-        return result;
-    }
-
-    run() {
-        if (this.processes.length === 0) return alert("Please add at least one process.");
-
-        const algo = this.algorithmSelect.value;
-
-        if (algo === "FCFS") this.timeline = this.fcfs();
-        else if (algo === "SJF") this.timeline = this.sjf();
-        else if (algo === "Priority") this.timeline = this.priority();
-        else if (algo === "SRTF") this.timeline = this.srtf();
-        else this.timeline = this.roundRobin(parseInt(this.timeQuantumInput.value) || 2);
-
-        this.calculateMetrics();
-        this.renderGantt();
-        this.updateMetrics();
-        this.renderExecutionDetails();
-    }
-
-    calculateMetrics() {
-        const completion = {};
-        const responseTime = {};
-        
-        this.timeline.forEach(item => {
-            if (item.process !== "IDLE") {
-                completion[item.process] = item.end;
-                if (responseTime[item.process] === undefined) {
-                    responseTime[item.process] = item.start;
-                }
-            }
-        });
-
-        let totalWait = 0;
-        let totalTurn = 0;
-        let totalResp = 0;
-
-        this.processes.forEach(p => {
-            const c = completion[p.id];
-            const tat = c - p.arrival;
-            const wt = tat - p.burst;
-            const rt = responseTime[p.id] - p.arrival;
-            totalWait += wt;
-            totalTurn += tat;
-            totalResp += rt;
-        });
-
-        const totalTime = Math.max(...this.timeline.map(t => t.end));
-        const totalBurst = this.processes.reduce((s, p) => s + p.burst, 0);
-
-        this.metrics = {
-            avgWait: totalWait / this.processes.length,
-            avgTurn: totalTurn / this.processes.length,
-            avgResp: totalResp / this.processes.length,
-            totalTime,
-            totalTurnSum: totalTurn,
-            cpuUtil: (totalBurst / totalTime) * 100,
-            responseTime
-        };
-    }
-
-    renderGantt() {
-        if (!this.timeline.length) {
-            this.ganttPlaceholder.style.display = "flex";
-            this.ganttContainer.innerHTML = "";
-            this.ganttContainer.appendChild(this.ganttPlaceholder);
-            return;
-        }
-
-        this.ganttPlaceholder.style.display = "none";
-
-        const maxTime = Math.max(...this.timeline.map(t => t.end));
-        const colors = ["c0", "c1", "c2", "c3", "c4", "c5"];
-
-        const chart = document.createElement("div");
-        chart.className = "gantt-chart";
-
-        this.timeline.forEach((item, i) => {
-            const bar = document.createElement("div");
-            const width = ((item.end - item.start) / maxTime) * 100;
-            bar.style.width = width + "%";
-
-            if (item.process === "IDLE") {
-                bar.className = "gantt-bar idle-bar";
-                bar.textContent = "IDLE";
-            } else {
-                bar.className = `gantt-bar ${colors[i % colors.length]}`;
-                bar.textContent = item.process;
-            }
-
-            chart.appendChild(bar);
-        });
-
-        const axis = document.createElement("div");
-        axis.className = "time-axis";
-
-        for (let t = 0; t <= maxTime; t++) {
-            const marker = document.createElement("div");
-            marker.className = "time-marker";
-            marker.style.left = `${(t / maxTime) * 100}%`;
-            marker.textContent = t;
-            axis.appendChild(marker);
-        }
-
-        this.ganttContainer.innerHTML = "";
-        this.ganttContainer.appendChild(chart);
-        this.ganttContainer.appendChild(axis);
-    }
-
-    updateMetrics() {
-        this.avgWaitEl.textContent = this.metrics.avgWait.toFixed(2);
-        this.avgTurnEl.textContent = this.metrics.avgTurn.toFixed(2);
-        this.avgRespEl.textContent = this.metrics.avgResp.toFixed(2);
-        this.totalTimeEl.textContent = this.metrics.totalTime + " ms";
-        this.totalTATEl.textContent = this.metrics.totalTurnSum + " ms";
-
-        this.avgWaitBar.style.width = "100%";
-        this.avgTurnBar.style.width = "100%";
-        this.avgRespBar.style.width = "100%";
-        this.totalTimeBar.style.width = "100%";
-        this.totalTATBar.style.width = "100%";
-
-        const cpu = Math.round(this.metrics.cpuUtil);
-        this.cpuPercent.textContent = cpu + "%";
-
-        const r = 45;
-        const circ = 2 * Math.PI * r;
-        this.cpuProgress.style.strokeDasharray = `${circ} ${circ}`;
-        this.cpuProgress.style.strokeDashoffset = circ * (1 - cpu / 100);
-    }
-
-    injectCPUSVGGradient() {
-        const defs = `
-        <svg width="0" height="0">
-          <defs>
-            <linearGradient id="cpuGrad" x1="0%" x2="100%">
-              <stop offset="0%" stop-color="#5b9cff"/>
-              <stop offset="100%" stop-color="#8b5cf6"/>
-            </linearGradient>
-          </defs>
-        </svg>`;
-        document.body.insertAdjacentHTML("afterbegin", defs);
-    }
-
-    setupCPUInitial() {
-        const r = 45;
-        const circ = 2 * Math.PI * r;
-        this.cpuProgress.style.strokeDasharray = `${circ} ${circ}`;
-        this.cpuProgress.style.strokeDashoffset = circ;
-    }
-
-    renderExecutionDetails() {
-        const completion = {};
-        this.timeline.forEach(t => {
-            if (t.process !== "IDLE") completion[t.process] = t.end;
-        });
-
-        let html = `
-        <table class="execution-table">
-          <thead>
-            <tr>
-              <th>Process</th><th>AT (in ms)</th><th>BT (in ms)</th>
-              <th>Start (in ms)</th><th>End (in ms)</th>
-              <th>Waiting (in ms)</th><th>Turnaround (in ms)</th><th>Response (in ms)</th>
-            </tr>
-          </thead>
-          <tbody>`;
-
-        this.processes.forEach(p => {
-            const comp = completion[p.id];
-            const tat = comp - p.arrival;
-            const wt = tat - p.burst;
-            const rt = this.metrics.responseTime[p.id] - p.arrival;
-
-            const firstStart =
-                this.timeline.find(t => t.process === p.id)?.start ?? "-";
-
-            html += `
-            <tr>
-              <td>${p.id}</td>
-              <td>${p.arrival}</td>
-              <td>${p.burst}</td>
-              <td>${firstStart}</td>
-              <td>${comp}</td>
-              <td>${wt}</td>
-              <td>${tat}</td>
-              <td>${rt}</td>
-            </tr>`;
-        });
-
-        html += `</tbody></table>`;
-        this.executionDetails.innerHTML = html;
-    }
-
-    reset() {
-        this.timeline = [];
-        this.ganttContainer.innerHTML = "";
-        this.ganttContainer.appendChild(this.ganttPlaceholder);
-        this.ganttPlaceholder.style.display = "flex";
-        this.cpuPercent.textContent = "0%";
-        this.avgWaitEl.textContent = "0.00";
-        this.avgTurnEl.textContent = "0.00";
-        this.avgRespEl.textContent = "0.00";
-        this.totalTimeEl.textContent = "0 ms";
-        this.totalTATEl.textContent = "0 ms";
-        this.avgWaitBar.style.width = "0%";
-        this.avgTurnBar.style.width = "0%";
-        this.avgRespBar.style.width = "0%";
-        this.totalTimeBar.style.width = "0%";
-        this.totalTATBar.style.width = "0%";
-        this.setupCPUInitial();
-        this.executionDetails.innerHTML = '<p class="placeholder-text">Execute scheduler to see process execution details</p>';
-    }
-}
-
-let scheduler;
-document.addEventListener("DOMContentLoaded", () => {
-    scheduler = new Scheduler();
-});
-  </script>
+  <!-- ==================== EXTERNAL LIBRARIES ==================== -->
+  <!-- SheetJS Library for Excel file parsing (.xlsx, .xls) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  
+  <!-- PapaParse Library for CSV file parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  
+  <!-- Main JavaScript Logic -->
+  <script src="scheduler.js"></script>
 </body>
 </html>

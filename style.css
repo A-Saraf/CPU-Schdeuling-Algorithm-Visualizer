@@ -1,18 +1,32 @@
-/* -----------------------------------------
-   Global & Theme
------------------------------------------- */
+/**
+ * ============================================================================
+ * CPU SCHEDULER VISUALIZER - STYLESHEET
+ * ============================================================================
+ * A modern, dark-themed stylesheet with glassmorphism effects
+ * Features: Responsive design, smooth animations, gradient accents
+ * ============================================================================
+ */
+
+/* ============================================================================
+   GLOBAL RESET & BASE STYLES
+============================================================================ */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-:root{
+/* ============================================================================
+   CSS CUSTOM PROPERTIES (THEME VARIABLES)
+============================================================================ */
+:root {
+  /* Background Colors */
   --bg-1: #020817;
   --bg-2: #0f172a;
   --bg-3: #1e293b;
   --muted: #94a3b8;
 
+  /* Accent Colors */
   --accent1: #5b9cff;
   --accent2: #8b5cf6;
   --accent3: #4fd1c5;
@@ -20,21 +34,27 @@
   --yellow: #fbbf24;
   --danger: #ef4444;
 
+  /* UI Elements */
   --card-bg: rgba(255,255,255,0.03);
   --border-light: rgba(255,255,255,0.05);
 
+  /* Glassmorphism Effects */
   --glass-bg: rgba(255,255,255,0.03);
   --glass-border: rgba(255,255,255,0.06);
   --glass-blur: 10px;
 
+  /* Typography */
   --font: "Inter", "Segoe UI", system-ui, sans-serif;
 }
 
+/* ============================================================================
+   BASE HTML & BODY
+============================================================================ */
 html, body {
   height: 100%;
 }
 
-body{
+body {
   font-family: var(--font);
   color: #e2e8f0;
   background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 50%, var(--bg-3) 100%);
@@ -42,14 +62,17 @@ body{
   -webkit-font-smoothing: antialiased;
 }
 
-/* -----------------------------------------
-   Layout Container
------------------------------------------- */
+/* ============================================================================
+   LAYOUT CONTAINER
+============================================================================ */
 .container {
   max-width: 1400px;
   margin: auto;
 }
 
+/* ============================================================================
+   HEADER
+============================================================================ */
 .header {
   text-align: center;
   margin-bottom: 25px;
@@ -61,6 +84,7 @@ body{
   background: linear-gradient(90deg, var(--accent1), var(--accent2));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .header p {
@@ -68,7 +92,10 @@ body{
   margin-top: 6px;
 }
 
-/* Main Grid */
+/* ============================================================================
+   MAIN GRID LAYOUT
+   Two-column layout: Left panel (controls) | Right panel (visualization)
+============================================================================ */
 .main-content {
   display: grid;
   grid-template-columns: 350px 1fr;
@@ -77,16 +104,19 @@ body{
   min-height: calc(100vh - 150px);
 }
 
-/* -----------------------------------------
-   Left Panel
------------------------------------------- */
+/* ============================================================================
+   LEFT PANEL (CONTROLS)
+============================================================================ */
 .left-panel {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* Card */
+/* ============================================================================
+   CARD COMPONENT
+   Glassmorphism card with backdrop blur
+============================================================================ */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--border-light);
@@ -102,7 +132,130 @@ body{
   color: #f1f5f9;
 }
 
-/* Info Button */
+/* ============================================================================
+   TABS (MANUAL ENTRY / UPLOAD TABLE)
+============================================================================ */
+.tab-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--orange), var(--yellow));
+  color: #1e293b;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* ============================================================================
+   FILE UPLOAD AREA
+   Drag & drop zone with hover effects
+============================================================================ */
+.upload-area {
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 20px 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.02);
+  margin-top: 10px;
+}
+
+.upload-area:hover {
+  border-color: var(--orange);
+  background: rgba(251, 146, 60, 0.05);
+}
+
+.upload-area.dragover {
+  border-color: var(--yellow);
+  background: rgba(251, 191, 36, 0.1);
+  transform: scale(1.02);
+}
+
+.upload-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.upload-text {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.upload-subtext {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* Upload Info Section */
+.upload-info {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.info-title {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.info-box {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 6px;
+  font-family: 'Courier New', monospace;
+}
+
+.info-box code {
+  display: block;
+  color: #4fd1c5;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.info-note {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: italic;
+}
+
+/* ============================================================================
+   INFO BUTTON (ALGORITHM DESCRIPTION)
+============================================================================ */
 .info-btn {
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -127,7 +280,9 @@ body{
   transform: scale(1.1);
 }
 
-/* Form controls */
+/* ============================================================================
+   FORM CONTROLS
+============================================================================ */
 .form-label {
   font-size: 13px;
   color: var(--muted);
@@ -154,13 +309,16 @@ body{
   background: rgba(255,255,255,0.05);
 }
 
+/* Two-column layout for form inputs */
 .two-cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-/* Buttons */
+/* ============================================================================
+   BUTTONS
+============================================================================ */
 .btn {
   border: none;
   outline: none;
@@ -181,6 +339,7 @@ body{
   transform: translateY(0);
 }
 
+/* Button Variants */
 .btn-primary {
   background: linear-gradient(135deg, var(--orange), var(--yellow));
   color: #1e293b;
@@ -213,9 +372,9 @@ body{
   margin-top: 10px;
 }
 
-/* -----------------------------------------
-   Process List
------------------------------------------- */
+/* ============================================================================
+   PROCESS LIST
+============================================================================ */
 .process-list {
   display: flex;
   flex-direction: column;
@@ -245,18 +404,18 @@ body{
   font-size: 12px;
 }
 
-/* -----------------------------------------
-   Right Panel
------------------------------------------- */
+/* ============================================================================
+   RIGHT PANEL (VISUALIZATION)
+============================================================================ */
 .right-panel {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* -----------------------------------------
-   Gantt Chart
------------------------------------------- */
+/* ============================================================================
+   GANTT CHART
+============================================================================ */
 .gantt-container {
   min-height: 150px;
   display: flex;
@@ -264,6 +423,7 @@ body{
   justify-content: center;
 }
 
+/* Placeholder (shown before execution) */
 .gantt-placeholder {
   display: flex;
   flex-direction: column;
@@ -287,7 +447,7 @@ body{
   font-size: 13px;
 }
 
-/* Bar animation */
+/* Gantt Chart Bars */
 .gantt-chart {
   display: flex;
   gap: 0;
@@ -311,11 +471,13 @@ body{
   justify-content: center;
 }
 
+/* Bar grow animation */
 @keyframes growbar {
   from { transform: scaleX(0); opacity: 0; }
   to   { transform: scaleX(1); opacity: 1; }
 }
 
+/* Time Axis */
 .time-axis {
   position: relative;
   height: 30px;
@@ -333,7 +495,7 @@ body{
   font-weight: 500;
 }
 
-/* Gantt Colors - Toned down to match theme */
+/* Gantt Bar Color Schemes */
 .c0 { background: linear-gradient(135deg, #3b82f6, #1e40af); color: #e0e7ff; }
 .c1 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #ede9fe; }
 .c2 { background: linear-gradient(135deg, #ec4899, #be185d); color: #fce7f3; }
@@ -341,6 +503,7 @@ body{
 .c4 { background: linear-gradient(135deg, #10b981, #059669); color: #d1fae5; }
 .c5 { background: linear-gradient(135deg, #06b6d4, #0284c7); color: #cffafe; }
 
+/* Idle Bar (striped pattern) */
 .idle-bar {
   background: repeating-linear-gradient(
     45deg,
@@ -355,16 +518,16 @@ body{
   font-style: italic;
 }
 
-/* -----------------------------------------
-   Metrics
------------------------------------------- */
+/* ============================================================================
+   METRICS GRID
+============================================================================ */
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(3,1fr);
   gap: 15px;
 }
 
-/* CPU Circle */
+/* CPU Utilization (Circular Progress) */
 .metric.cardio {
   display: flex;
   align-items: center;
@@ -406,7 +569,7 @@ body{
   color: #f1f5f9;
 }
 
-/* Glass Metrics */
+/* Glass Metric Cards */
 .metric.glass {
   padding: 14px;
   border-radius: 14px;
@@ -448,9 +611,9 @@ body{
   color: #f1f5f9;
 }
 
-/* -----------------------------------------
-   Execution Details
------------------------------------------- */
+/* ============================================================================
+   EXECUTION DETAILS TABLE
+============================================================================ */
 .execution-table-container {
   overflow-x: auto;
 }
@@ -491,9 +654,9 @@ body{
   text-align: center;
 }
 
-/* -----------------------------------------
-   Algorithm Info Modal
------------------------------------------- */
+/* ============================================================================
+   ALGORITHM INFO MODAL
+============================================================================ */
 .modal {
   position: fixed;
   top: 0;
@@ -517,6 +680,7 @@ body{
   to { opacity: 1; }
 }
 
+/* Modal overlay (background blur) */
 .modal-overlay {
   position: absolute;
   top: 0;
@@ -527,6 +691,7 @@ body{
   backdrop-filter: blur(8px);
 }
 
+/* Modal content box */
 .modal-content {
   position: relative;
   width: 100%;
@@ -556,6 +721,7 @@ body{
   z-index: 1;
 }
 
+/* Modal close button */
 .modal-close {
   position: absolute;
   top: 20px;
@@ -582,6 +748,7 @@ body{
   transform: rotate(90deg);
 }
 
+/* Modal title */
 .modal-title {
   font-size: 24px;
   font-weight: 700;
@@ -590,8 +757,10 @@ body{
   background: linear-gradient(90deg, var(--accent1), var(--accent2));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+/* Modal divider (yellow line) */
 .modal-divider {
   height: 3px;
   background: linear-gradient(90deg, var(--orange), var(--yellow));
@@ -600,15 +769,17 @@ body{
   box-shadow: 0 2px 8px rgba(251, 146, 60, 0.3);
 }
 
+/* Modal description text */
 .modal-text {
   font-size: 15px;
   line-height: 1.8;
   color: #cbd5e1;
 }
 
-/* -----------------------------------------
-   Responsive
------------------------------------------- */
+/* ============================================================================
+   RESPONSIVE DESIGN
+   Adjusts layout for smaller screens
+============================================================================ */
 @media (max-width: 1100px) {
   .main-content {
     grid-template-columns: 1fr;
@@ -624,6 +795,9 @@ body{
   }
 }
 
+/* ============================================================================
+   UTILITY CLASSES
+============================================================================ */
 .mt {
   margin-top: 10px;
 }
